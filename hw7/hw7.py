@@ -62,10 +62,17 @@ def show_prep(date: str):
             cursor.execute(sql, (date,))
 
             for row in cursor:
-                if row["date difference"] is None:
+                diff = row["date difference"]
+
+                if diff is None:
                     print("Invalid format")
-                else:
-                    print("Diff:", row["date difference"])
+                elif diff == 0:
+                    print("Дата є поточною")
+                elif diff > 0:
+                    print(f"Дата у минулому за {diff} днів від поточної дати")
+                elif diff < 0:
+                    print(f"Дата у майбутньому через {-diff} дні від поточної дати")
+
     except mysql.connector.Error as err:
         print("ERR:", err)
         print("SQL:", sql)
